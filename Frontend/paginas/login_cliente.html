@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Cliente</title>
+
+    <link rel="stylesheet" href="../CSS/login/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script>
+        function mostrarLogin() {
+            document.getElementById("login-form").style.display = "block";
+            document.getElementById("cadastro-form").style.display = "none";
+            ativarAba(0);
+        }
+
+        function mostrarCadastro() {
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("cadastro-form").style.display = "block";
+            ativarAba(1);
+        }
+
+        function ativarAba(index) {
+            const tabs = document.querySelectorAll(".tab");
+            tabs.forEach(tab => tab.classList.remove("active"));
+            tabs[index].classList.add("active");
+        }
+    </script>
+</head>
+
+<body>
+<div class="main-login">
+
+    <div class="left-login">
+        <h1>Área do cliente</h1>
+        <a href="/index">
+            <img class="img" src="/imagens/Logo_Pretinha.png" alt="Logo do Salão">
+        </a>
+    </div>
+
+    <div class="right-login">
+        <div class="caixa-login">
+
+            <div class="tabs container">
+                <button class="btn-login active" onclick="mostrarLogin()">Login</button>
+                <button class="btn-login tab" onclick="mostrarCadastro()">Criar conta</button>
+            </div>
+
+            <form id="login-form">
+                <h1>LOGIN CLIENTE</h1>
+
+                <div class="textfield">
+                    <label>Usuário</label>
+                    <input type="text" name="nome_usuario" required>
+                </div>
+
+                <div class="textfield">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+
+                <button class="btn-login" type="submit">Entrar</button>
+            </form>
+
+            <form id="cadastro-form" style="display:none;">
+                <h1>CRIAR CONTA CLIENTE</h1>
+
+                <div class="textfield">
+                    <label>Usuário</label>
+                    <input type="text" name="nome_usuario" required>
+                </div>
+
+                <div class="textfield">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+
+                <button class="btn-login" type="submit">Cadastrar</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.getElementById("login-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const dados = {
+        nome_usuario: formData.get("nome_usuario"),
+        senha: formData.get("senha")
+    };
+
+    try {
+        const resposta = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.ok) {
+            alert("Login realizado com sucesso!");
+            window.location.href = "/home_cliente";
+        } else {
+            alert(resultado.erro || "Usuário não é cliente ou dados inválidos.");
+        }
+
+    } catch (err) {
+        alert("Erro ao conectar com o servidor");
+        console.error(err);
+    }
+});
+</script>
+
+<script>
+document.getElementById("cadastro-form").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const dados = {
+        nome_usuario: formData.get("nome_usuario"),
+        senha: formData.get("senha"),
+        tipo: "cliente"
+    };
+
+    try {
+        const resposta = await fetch("/api/usuario", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.ok) {
+            alert("Conta cliente criada! Complete seu cadastro.");
+            window.location.href = "/cadastro_cliente";
+        } else {
+            alert(resultado.erro || "Erro ao cadastrar.");
+        }
+
+    } catch (err) {
+        alert("Erro ao conectar com o servidor");
+        console.error(err);
+    }
+});
+</script>
+
+</body>
+</html>

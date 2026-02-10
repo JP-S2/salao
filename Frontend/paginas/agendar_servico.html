@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Serviço</title>
+
+    <link rel="stylesheet" href="/CSS/lista_cliente.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="corpo">
+
+    <!-- CABEÇALHO -->
+    <div id="cabecalho">
+        <nav>
+            <div class="container">
+                <div class="logo">
+                    <a href="/index.html">
+                        <img class="img" src="/imagens/Logo_Pretinha.png">
+                    </a>
+                </div>
+
+                <div id="menu_nav" class="container">
+                    <h1>Agendar Serviço</h1>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div id="body">
+        <div class="box">
+
+            <form id="form-servico" class="container" style="flex-direction: column; gap:15px; margin-top:30px;">
+
+                <p>CPF do Cliente</p>
+                <input type="text" name="cpf_cliente" required>
+
+                <p>CPF do Cabeleireiro</p>
+                <input type="text" name="cpf_cabeleireiro" required>
+
+                <p>Data do Serviço</p>
+                <input type="date" name="data_servico" required>
+
+                <p>Forma de Pagamento</p>
+                <select name="pagamento" required>
+                    <option value="">Selecione</option>
+                    <option value="PIX">PIX</option>
+                    <option value="Cartão">Cartão</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
+
+                <button type="submit">AGENDAR</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <div id="rodape">
+        <section>
+            <div class="container box">
+                <div class="div_section container box">
+                    <div class="div_section_text">
+                        <a href="">
+                            <img class="img" src="/imagens/Logo_Pretinha.png">
+                        </a>
+                    </div>
+
+                    <div class="div_section_text">
+                        <ul id="lista_redes" class="menu">
+                            <li>insta img</li>
+                            <li>face img</li>
+                            <li>whats img</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="div_section">
+                    <div class="div_section_text">
+                        <h3 id="contato">CONTATO</h3>
+                    </div>
+
+                    <div class="div_section_text">
+                        <address>
+                            (xx) xxxx-xxxx <br />
+                            <a href="">email</a> <br />
+                            Rua xxxx, bairro x, cidade x - estado xxxx
+                        </address>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="div_copyright">
+                <p>Criado por - <a href="">Oreo's</a></p>
+            </div>
+        </footer>
+    </div>
+
+</div>
+
+<script>
+document.getElementById("form-servico").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const dados = {
+        data_servico: e.target.data_servico.value,
+        pagamento: e.target.pagamento.value,
+        cpf_cabeleireiro: e.target.cpf_cabeleireiro.value,
+        cpf_cliente: e.target.cpf_cliente.value,
+        
+    };
+
+    console.log(dados)
+
+    try {
+        const resp = await fetch("/api/agendar_servico", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const r = await resp.json();
+
+        if (resp.ok) {
+            alert("Serviço agendado com sucesso!");
+            origem = sessionStorage.getItem("paginaOrigem")
+            console.log(origem)
+            if(origem){
+                window.location.href = origem;
+            }
+            
+        } else {
+            alert(r.erro);
+        }
+    } catch (err) {
+        alert("Erro ao conectar com servidor");
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Cabeleireiro</title>
+    <link rel="stylesheet" href="/CSS/style.css">
+</head>
+<body>
+    <div class="container">
+
+        <form class="form" id="form-cabeleireiro">
+            <div class="box">
+                <h1>CADASTRO NOVA CABELEIREIRA</h1>
+
+                <div class="textfield">
+                    <label>Nome</label>
+                    <input type="text" name="nome_cabeleireiro" required>
+                </div>
+
+                <div class="textfield">
+                    <label>CPF</label>
+                    <input type="text" name="cpf_cabeleireiro" required>
+                </div>
+
+                <div class="textfield">
+                    <label>Especialização</label>
+                    <input type="text" name="especializacao">
+                </div>
+
+                <div class="textfield">
+                    <label>Celular</label>
+                    <input type="text" name="celular">
+                </div>
+
+                <hr>
+
+                <h2>Dados de Login</h2>
+
+                <div class="textfield">
+                    <label>Nome de Usuário</label>
+                    <input type="text" name="nome_usuario" required>
+                </div>
+
+                <div class="textfield">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+
+                <button class="button" type="submit">CADASTRAR</button>
+            </div>
+        </form>
+
+    </div>
+
+<script>
+document.getElementById("form-cabeleireiro").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const dados_pessoais = {
+        nome_cabeleireiro: formData.get("nome_cabeleireiro"),
+        cpf_cabeleireiro: formData.get("cpf_cabeleireiro"),
+        especializacao: formData.get("especializacao"),
+        celular: formData.get("celular"),
+
+    };
+
+    const dados_login = {
+        nome_usuario: formData.get("nome_usuario"),
+        senha: formData.get("senha"),
+        tipo: "funcionario"
+    }
+
+    ///////// mudar uma coisinha aqui pra nao ter chance de erro
+
+    try {
+        const resposta_1 = await fetch("/api/cabeleireiro", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resposta_2 = await fetch("/api/usuario", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado1 = await resposta_1.json();
+        const resultado2 = await resposta_2.json();
+
+        if (resultado_1.ok && resultado_2.ok) {
+            alert("Funcionária cadastrada com sucesso!");
+            window.location.href = "/home_funcionario";
+        } else {
+            alert(resultado.erro || "Erro ao cadastrar.");
+        }
+
+    } catch (err) {
+        alert("Erro ao conectar com o servidor");
+        console.error(err);
+    }
+});
+</script>
+
+</body>
+</html>

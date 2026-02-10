@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="../CSS/servicos.css" />
+  <title>Lista de Clientes</title>
+</head>
+
+<body>
+    <div id="corpo">
+        <div id="cabecalho">
+            <nav>
+                <div id="" class="container">
+                    <div class="logo">
+                            <a href="/index.html" class="conteiner"> <img  class="img" src="../imagens/Logo_Pretinha.png" alt=""></a>
+                    </div>                        
+                    <div id="menu_nav" class="container">
+                        <div>
+                            <h1>Clientes</h1>
+                        </div>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+        <div id ="body">
+                <div class = "box">
+                    <ul id="img_list" class="container"> <!-- #feed -->
+                    </ul>
+
+                    <div id="loader" class = "spinner">
+                    
+                    </div>
+                </div>
+
+        </div>
+        <div id="rodape">
+            <section>
+                <div class="container box">
+                
+                    <div class="div_section container box"> 
+                        <div class="div_section_text">
+                            <a href=""><span>
+                                <img class ="img" src="../imagens/Logo_Pretinha.png" alt="">
+                            </span></a>
+                        </div>
+                        <div class="div_section_text">
+                            <ul id="lista_redes" class="menu">
+                                <li>insta img</li>
+                                <li>face img</li>
+                                <li>whats imgg</li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="div_section">
+                        <div class="div_section_text">
+                            <h3 id="contato">CONTATO</h3>
+                        </div>
+
+                        <div class="div_section_text">
+                            <address>
+                            (xx) xxxx-xxxx
+                            <br>
+                            <a href="">email</a>
+                            <br>
+                            Rua xxxx, bairro x, cidade x - estado xxxx
+
+                            </address>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </section>
+            <footer>
+                <div class="box">
+                    <div class = "div_copyright ">
+                        <p>Criado por -
+                            <a href="">Oreo's</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+
+    <script src="../js/feed.js"></script>
+<!--<script>
+  async function listarClientes() {
+    try {
+      const resp = await fetch("/api/cliente");
+      if (!resp.ok) throw new Error("Erro na API");
+
+      const clientes = await resp.json();
+      const lista = document.getElementById("lista");
+
+      if (clientes.length === 0) {
+        lista.innerHTML = "<li>Nenhum cliente cadastrado.</li>";
+        return;
+      }
+
+      clientes.forEach(cli => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>Nome:</strong> ${cli.nome_cliente} <br>
+          <strong>CPF:</strong> ${cli.cpf_cliente} <br>
+          <strong>CEP:</strong> ${cli.cep} <br>
+          <strong>Rua:</strong> ${cli.rua} <br>
+          <strong>Celular:</strong> ${cli.celular}
+          <hr>
+        `;
+        lista.appendChild(li);
+      });
+
+    } catch (e) {
+      document.getElementById("lista").innerHTML =
+        "<li>Erro ao carregar clientes.</li>";
+      console.error(e);
+    }
+  }
+
+  listarClientes();
+</script>
+-->
+</body>
+</html>

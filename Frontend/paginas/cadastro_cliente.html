@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Cliente</title>
+    <link rel="stylesheet" href="/CSS/style.css">
+</head>
+<body>
+    <div class="container">
+
+        <form class="form" id="form-cliente">
+            <div class="box">
+                <h1>CADASTRO CLIENTE</h1>
+
+                <div class="textfield">
+                    <label>Nome</label>
+                    <input type="text" name="nome_cliente" placeholder="Nome" required>
+                </div>
+
+                <div class="textfield">
+                    <label>CPF</label>
+                    <input type="text" name="cpf_cliente" placeholder="CPF" required>
+                </div>
+
+                <div class="textfield">
+                    <label>CEP</label>
+                    <input type="text" name="cep" placeholder="CEP">
+                </div>
+
+                <div class="textfield">
+                    <label>Rua</label>
+                    <input type="text" name="rua" placeholder="Rua">
+                </div>
+
+                <div class="textfield">
+                    <label>Número de Celular</label>
+                    <input type="text" name="celular" placeholder="Número de Celular">
+                </div>
+            
+                <button class="button" type="submit">CADASTRAR</button>
+            </div>
+        </form>
+
+        <div class="conteudo">
+            <h1>Seja muito bem-vinda (o)! É uma satisfação ter <br> você como nossa cliente no Salão Pretinha <br>Cabeleireira.</h1>
+            <a href="/index.html">
+                <img class="img" src="/imagens/Logo_Pretinha.png" alt="Logo do Salão">
+            </a>
+        </div>
+
+    </div>
+
+<script>
+    document.getElementById("form-cliente").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const dados = {
+        nome_cliente: formData.get("nome_cliente"),
+        cpf_cliente: formData.get("cpf_cliente"),
+        cep: formData.get("cep"),
+        rua: formData.get("rua"),
+        celular: formData.get("celular")
+    };
+
+    try {
+        const resposta = await fetch("/api/cliente", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resultado.success_message) {
+            alert("Cliente cadastrado com sucesso!");
+
+            const tipo = localStorage.getItem("tipo_usuario");
+
+            origem = sessionStorage.getItem("paginaOrigem")
+            console.log(origem)
+            if(origem){
+                window.location.href = origem;
+            }
+        }else if (resultado.erro) {
+            alert(resultado.erro);
+        }
+
+    } catch (err) {
+        alert("Erro ao conectar com o servidor");
+        console.error(err);
+    }
+});
+</script>
+
+</body>
+</html>

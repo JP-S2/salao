@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Usuário</title>
+    <link rel="stylesheet" href="/CSS/style.css">
+</head>
+<body>
+    <div class="container">
+
+        <form class="form" id="form-usuario">
+            <div class="box">
+                <h1>CADASTRO DE USUÁRIO</h1>
+
+                <div class="textfield">
+                    <label>Usuário</label>
+                    <input type="text" name="nome_usuario" placeholder="Usuário" required>
+                </div>
+
+                <div class="textfield">
+                    <label>Senha</label>
+                    <input type="password" name="senha" placeholder="Senha" required>
+                </div>
+            
+                <button class="button" type="submit">CADASTRAR</button>
+            </div>
+        </form>
+
+        <div class="conteudo">
+            <h1>Cadastro de acesso ao sistema</h1>
+            <a href="/index.html">
+                <img class="img" src="/imagens/Logo_Pretinha.png" alt="Logo do Salão">
+            </a>
+        </div>
+
+        <a href="/admin">
+            <button type="button">Voltar para o painel</button>
+        </a>
+
+    </div>
+
+<script>
+document.getElementById("form-usuario").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const dados = {
+        nome_usuario: formData.get("nome_usuario"),
+        senha: formData.get("senha")
+    };
+
+    try {
+        const resposta = await fetch("/api/usuario", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resultado.success_message) {
+            alert(resultado.success_message);
+            window.location.href = resultado.redirect;
+        } else if (resultado.erro) {
+            alert(resultado.erro);
+        }
+
+    } catch (err) {
+        alert("Erro ao conectar com o servidor");
+        console.error(err);
+    }
+});
+</script>
+
+</body>
+</html>

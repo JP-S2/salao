@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/CSS/lista_cliente.css" />
+  <title>Lista de Cabeleireiros</title>
+</head>
+
+<body>
+  <h1>Cabeleireiros Cadastrados</h1>
+
+  <ul id="lista"></ul>
+
+  <script>
+    async function listarCabeleireiros() {
+      try {
+        const resp = await fetch("/api/cabeleireiro");
+        if (!resp.ok) throw new Error("Erro na API");
+
+        const dados = await resp.json();
+        const lista = document.getElementById("lista");
+
+        if (dados.length === 0) {
+          lista.innerHTML = "<li>Nenhum cabeleireiro cadastrado.</li>";
+          return;
+        }
+
+        dados.forEach(cab => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <strong>Nome:</strong> ${cab.nome_cabeleireiro} <br>
+            <strong>CPF:</strong> ${cab.cpf_cabeleireiro} <br>
+            <strong>Especialização:</strong> ${cab.especializacao} <br>
+            <strong>Celular:</strong> ${cab.celular}
+            <hr>
+          `;
+          lista.appendChild(li);
+        });
+
+      } catch (e) {
+        document.getElementById("lista").innerHTML =
+          "<li>Erro ao carregar cabeleireiros.</li>";
+        console.error(e);
+      }
+    }
+
+    listarCabeleireiros();
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Funcionário</title>
+
+    <link rel="stylesheet" href="/CSS/login/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="main-login">
+
+    <div class="left-login">
+        <h1>Área do Funcionário</h1>
+        <a href="/index">
+            <img class="img" src="/imagens/Logo_Pretinha.png" alt="Logo do Salão">
+        </a>
+    </div>
+
+    <div class="right-login">
+        <div class="caixa-login">
+
+            <form id="login-funcionario">
+                <h1>LOGIN FUNCIONÁRIO</h1>
+
+                <div class="textfield">
+                    <label>Usuário</label>
+                    <input type="text" name="nome_usuario" required>
+                </div>
+
+                <div class="textfield">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+
+                <button class="btn-login" type="submit">Entrar</button>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+document.getElementById("login-funcionario").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    const dados = {
+        nome_usuario: formData.get("nome_usuario"),
+        senha: formData.get("senha"),
+        tipo: "funcionario"
+    };
+
+    try {
+        const resposta = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(dados)
+        });
+
+        const resultado = await resposta.json();
+
+        if (resposta.ok) {
+            alert("Login realizado com sucesso!");
+            window.location.href = "/home_funcionario";
+        } else {
+            alert(resultado.erro || "Usuário não é funcionário ou dados inválidos.");
+        }
+
+    } catch (err) {
+        alert("Erro ao conectar com o servidor");
+        console.error(err);
+    }
+});
+</script>
+
+</body>
+</html>
